@@ -134,7 +134,7 @@ export const AttendantDashboard: React.FC<AttendantDashboardProps> = ({ user, on
             )}
             <div>
               <h1 className="text-2xl font-bold text-foreground">Painel do Atendente</h1>
-              <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+              <p className="text-muted-foreground">Bem-vindo, estou estudando, {user.name}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
