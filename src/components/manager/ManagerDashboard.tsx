@@ -15,7 +15,8 @@ import {
   CheckCircle,
   Activity,
   Eye,
-  UserCheck
+  UserCheck,
+  ArrowLeft
 } from 'lucide-react';
 
 interface AttendantStats {
@@ -28,7 +29,12 @@ interface AttendantStats {
   activeChats: number;
 }
 
-export const ManagerDashboard: React.FC<{ user: any }> = ({ user }) => {
+interface ManagerDashboardProps {
+  user: any;
+  onLogout?: () => void;
+}
+
+export const ManagerDashboard: React.FC<ManagerDashboardProps> = ({ user, onLogout }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('today');
 
   const mockAttendants: AttendantStats[] = [
@@ -84,9 +90,22 @@ export const ManagerDashboard: React.FC<{ user: any }> = ({ user }) => {
       {/* Header */}
       <div className="border-b bg-card px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Painel Gerencial</h1>
-            <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+          <div className="flex items-center gap-4">
+            {onLogout && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={onLogout}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Voltar
+              </Button>
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Painel Gerencial</h1>
+              <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="outline" size="sm">

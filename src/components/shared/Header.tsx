@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { LogOut, Settings, Bell } from 'lucide-react';
 
 interface HeaderProps {
@@ -44,6 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ user, userType, onLogout }) => {
           <Badge variant="outline" className={getTypeColor()}>
             {getTypeLabel()}
           </Badge>
+          <ThemeToggle />
           <Button variant="ghost" size="sm">
             <Bell className="w-4 h-4" />
           </Button>

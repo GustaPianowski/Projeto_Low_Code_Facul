@@ -14,7 +14,8 @@ import {
   CheckCircle,
   AlertCircle,
   Search,
-  Filter
+  Filter,
+  ArrowLeft
 } from 'lucide-react';
 
 interface Message {
@@ -27,7 +28,12 @@ interface Message {
   priority: 'low' | 'normal' | 'high';
 }
 
-export const AttendantDashboard: React.FC<{ user: any }> = ({ user }) => {
+interface AttendantDashboardProps {
+  user: any;
+  onLogout?: () => void;
+}
+
+export const AttendantDashboard: React.FC<AttendantDashboardProps> = ({ user, onLogout }) => {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [replyText, setReplyText] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -114,9 +120,22 @@ export const AttendantDashboard: React.FC<{ user: any }> = ({ user }) => {
       {/* Header */}
       <div className="border-b bg-card px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Painel do Atendente</h1>
-            <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+          <div className="flex items-center gap-4">
+            {onLogout && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={onLogout}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Voltar
+              </Button>
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Painel do Atendente</h1>
+              <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <Badge variant="outline" className="bg-success text-success-foreground">

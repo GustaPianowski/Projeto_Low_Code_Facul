@@ -8,9 +8,10 @@ import { Heart, MessageSquare, BarChart3 } from 'lucide-react';
 
 interface LoginScreenProps {
   onLogin: (userType: 'patient' | 'attendant' | 'manager', userData: any) => void;
+  onShowRegistration: () => void;
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onShowRegistration }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -137,6 +138,18 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
                 >
                   Entrar
                 </Button>
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Não tem uma conta?
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    onClick={onShowRegistration}
+                    className="w-full"
+                  >
+                    Cadastrar-se
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

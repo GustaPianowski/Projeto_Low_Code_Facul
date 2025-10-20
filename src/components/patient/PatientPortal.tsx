@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { DoctorSelectionModal } from './DoctorSelectionModal';
 import { 
   Calendar,
   MessageSquare, 
@@ -15,14 +16,20 @@ import {
   CheckCircle,
   Send,
   Phone,
-  Mail
+  Mail,
+  ArrowLeft
 } from 'lucide-react';
 
-export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
+interface PatientPortalProps {
+  user: any;
+  onLogout?: () => void;
+}
+
+export const PatientPortal: React.FC<PatientPortalProps> = ({ user, onLogout }) => {
   const [newMessage, setNewMessage] = useState('');
   const [selectedChannel, setSelectedChannel] = useState('whatsapp');
-
-  const mockAppointments = [
+  const [showDoctorModal, setShowDoctorModal] = useState(false);
+  const [appointments, setAppointments] = useState([
     {
       id: '1',
       doctor: 'Dr. Carlos Lima',
@@ -39,7 +46,7 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
       time: '10:00',
       status: 'pending'
     }
-  ];
+  ]);
 
   const mockMessages = [
     {
@@ -65,6 +72,10 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
     }
   };
 
+  const handleAppointmentBooked = (newAppointment: any) => {
+    setAppointments(prev => [...prev, newAppointment]);
+  };
+
   const getChannelIcon = (channel: string) => {
     const icons = {
       whatsapp: '💬',
@@ -79,9 +90,22 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
       {/* Header */}
       <div className="border-b bg-card px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">Portal do Paciente</h1>
-            <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+          <div className="flex items-center gap-4">
+            {onLogout && (
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={onLogout}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Voltar
+              </Button>
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Portal do Paciente</h1>
+              <p className="text-muted-foreground">Bem-vindo, {user.name}</p>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <Badge variant="outline" className="bg-primary text-primary-foreground">
@@ -115,7 +139,7 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {mockAppointments.map((appointment) => (
+                    {appointments.map((appointment) => (
                       <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="space-y-1">
                           <h4 className="font-medium">{appointment.doctor}</h4>
@@ -147,7 +171,10 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full">
+                  <Button 
+                    className="w-full"
+                    onClick={() => setShowDoctorModal(true)}
+                  >
                     <Calendar className="w-4 h-4 mr-2" />
                     Agendar Consulta
                   </Button>
@@ -292,6 +319,13 @@ export const PatientPortal: React.FC<{ user: any }> = ({ user }) => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modal de Seleção de Médicos */}
+      <DoctorSelectionModal
+        isOpen={showDoctorModal}
+        onClose={() => setShowDoctorModal(false)}
+        onAppointmentBooked={handleAppointmentBooked}
+      />
     </div>
   );
 };
